@@ -1,8 +1,8 @@
 from model_repo.subgraph_mining.subgraph_mining import subgraph_mining
-from svcBasic import Server as BasicServer
+from taskBasic import taskBasic 
 
 
-class alert_node_subgraph_mining(BasicServer):
+class alert_node_subgraph_mining(taskBasic):
     def __init__(self, **input):
         super().__init__(**input)
         self.table = self.params.get("table", "neo4j")

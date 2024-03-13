@@ -8,7 +8,7 @@ PASSWORD = "Zju302Ch"
 # tablename = "neo4j" # 数据库名
 
 
-class Server(object):
+class taskBasic(object):
     def __init__(self, **input) -> None:
         """
         维护一些基础设置,包括：数据库的连接信息,资源占用情况(CPU,GPU)
