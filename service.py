@@ -16,7 +16,7 @@ class graphComputation:
     def alert_subgraph_mining(
             self,
             task: str = "new_task",
-            model: str = "",
+            model: str = "alert_node_subgraph_mining",
             path: str = "alert_node_subgraph_mining",
             input_params: dict = {  
                 "table": "neo4j",
@@ -32,11 +32,12 @@ class graphComputation:
         并将文件中的内容以参数形式输入对应被@bentoml.api修饰的方法.
         see https://docs.bentoml.org/en/latest/reference/sdk.html#service-decorator
         """
-
+        ## 这里也可以直接import，取决于是否需要为不同task创建不同url，不需要则直接把task作为参数输入
         # 输入路径
         task_path = 'task.{:s}'.format(path)
         # 调用类
-        task_class = importlib.import_module(task_path)
+        mod = importlib.import_module(task_path)
+        task_class = getattr(mod, model)
         #实例化
         mining_svc = task_class(**input_params)
         # run

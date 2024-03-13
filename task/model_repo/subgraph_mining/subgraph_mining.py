@@ -20,17 +20,20 @@ def subgraph_mining(table, node_type, edge_type, node_id=0, directed = "undirect
 
                 for record in nodes:
                     node_id = record["id"]
-                    print(f"node id : {node_id}")
+                    # print(f"node id : {node_id}")
                     result = session.execute_write(mining_3_hop_subgraph_tx, node_type=node_type, node_id=node_id, edge_type=edge_type, directed=directed)
+                response = "Success!"
 
             else:
                 nodes = session.execute_read(query_name_get_nodes_tx, node_type=node_type)
+                nodes_ids = [record["id"] for record in nodes]
                 if node_id in [record["id"] for record in nodes]:
                     result = session.execute_write(mining_3_hop_subgraph_tx, node_type=node_type, node_id=node_id, edge_type=edge_type, directed=directed)
+                    response = f"node: {node_id}, linked with {result}"
                 else:
-                    result = "node not exist"
+                    response = f"node not exist(node id: {node_id})! node ids: {nodes_ids} \n"
     
-    return result
+    return response
 
 def query_name_get_nodes_tx(tx, node_type):
     target_id = tx.run(f"""

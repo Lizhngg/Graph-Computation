@@ -17,13 +17,6 @@ class taskBasic(object):
         # 登录信息
         self.loginInfo = {"URL": URL, "USERNAME": USERNAME, "PASSWORD":PASSWORD}
 
-        # 参数设置
-        self.task = input.get("task", "new task")
-        self.model = input.get("model", "graph model")
-        self.path = input.get("path", "")
-        self.params = input.get("params", {})
-        self.response = input.get("response", "default")
-
         # 资源配置
         self.gpu = torch.cuda.is_available()
         self.device = torch.device("cuda")

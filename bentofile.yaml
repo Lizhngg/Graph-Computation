@@ -4,5 +4,6 @@ labels:
   project: complex-service-network
 include:
 - "*.py"
+- "task/"
 python:
   requirements_txt: "./requirements.txt"
