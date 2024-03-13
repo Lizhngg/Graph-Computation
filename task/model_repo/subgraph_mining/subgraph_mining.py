@@ -8,7 +8,7 @@ PASSWORD = "Zju302Ch"
 
 
 # 创建Neo4j数据库连接驱动程序
-def subgraph_mining(table, node_type, edge_type, node_id=0, directed = "undirceted", if_all=False):
+def subgraph_mining(table, node_type, edge_type, node_id=0, directed = "undirected", if_all=False):
     
     # 创建Neo4j数据库连接驱动程序
     with GraphDatabase.driver(URL, auth=(USERNAME, PASSWORD)) as driver:
@@ -20,12 +20,13 @@ def subgraph_mining(table, node_type, edge_type, node_id=0, directed = "undircet
 
                 for record in nodes:
                     node_id = record["id"]
-                    result = session.execute_write(mining_3_hop_subgraph_tx, node_id, edge_type=edge_type, directed=directed)
+                    print(f"node id : {node_id}")
+                    result = session.execute_write(mining_3_hop_subgraph_tx, node_id=node_id, edge_type=edge_type, directed=directed)
 
             else:
                 nodes = session.execute_read(query_name_get_nodes_tx, node_type=node_type)
                 if node_id in [record["id"] for record in nodes]:
-                    result = session.execute_write(mining_3_hop_subgraph_tx, node_id, edge_type=edge_type, directed=directed)
+                    result = session.execute_write(mining_3_hop_subgraph_tx, node_id=node_id, edge_type=edge_type, directed=directed)
                 else:
                     result = "node not exist"
     
@@ -51,10 +52,10 @@ def mining_3_hop_subgraph_tx(tx, node_id, edge_type, directed):
         raise ValueError("Invalid value for directed: {}".format(directed))
 
     neighbor = tx.run(f"""
-        MERGE (alertnodes:AlertNodes alert_id: {node_id})
+        MERGE (alertnodes:AlertNodes {{ alert_id: {node_id} }})
         WITH alertnodes
         MATCH path = (start)-[*1..3]{edge_dir}(end)
-        WHERE start.id = $node_id AND all(r IN relationships(path) WHERE TYPE(r) = {edge_type})
+        WHERE start.id = {node_id} AND all(r IN relationships(path) WHERE TYPE(r) = '{edge_type}')
         WITH collect(end) AS neighbor_list, end, alertnodes
         FOREACH (n IN neighbor_list | 
                 MERGE (alertnodes)-[r:alert_service_Edge]->(n))

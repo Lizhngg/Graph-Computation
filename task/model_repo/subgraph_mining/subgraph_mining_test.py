@@ -1,4 +1,5 @@
 from neo4j import GraphDatabase
+from subgraph_mining import subgraph_mining
 
 # Neo4j数据库的连接信息
 URL = "neo4j://120.55.15.198:7687"
@@ -6,31 +7,27 @@ USERNAME = "neo4j"
 PASSWORD = "Zju302Ch"
 
 
-# 创建Neo4j数据库连接驱动程序
+
+TABLE = "neo4j"
+node_type = "TestNodes"
+edge_type = "service_service_Edge"
+node_id = 5
 def main():
-    
     # 创建Neo4j数据库连接驱动程序
     with GraphDatabase.driver(URL, auth=(USERNAME, PASSWORD)) as driver:
-        with driver.session(database="neo4j") as session:
+        with driver.session(database=TABLE) as session:
+
+            delete_nodes(session)
 
             test_preparation(session)
 
-            result = process_graph(session)
+    result = subgraph_mining(table=TABLE, node_type=node_type, edge_type=edge_type, node_id=node_id, directed = "undirected", if_all=False)
+    print(f"node: {node_id}, linked with {result} \n")
 
-
-def process_graph(session):
-    # 遍历每个节点，获取节点ID 并处理3跳子图
-    nodes = session.execute_read(query_name_get_nodes_tx, node_name="TestNodes")
-
-    delete_nodes(session)
-
-    for record in nodes:
-        node_id = record["id"]
-        print(f"node id: {node_id}")
-        result = session.execute_write(mining_3_hop_subgraph_tx, node_id, edge_name="before")
-        print(f"node: {node_id}, linked with {result} \n")
 
 def delete_nodes(session):
+
+
     delete_edge = ("""
             MATCH ()-[r:alert_service_Edge]-()
             DELETE r;
@@ -42,45 +39,23 @@ def delete_nodes(session):
         DETACH DELETE alertnodes
         """
     )
-    # delete_node = ("""
-    #     MATCH (node)
-    #     WHERE NOT ()--(node) AND NOT (node)--()
-    #     DELETE node;
-    #     """
-    # )
     session.run(delete_node)
+    
+    delete_edge = ("""
+            MATCH ()-[r:service_service_Edge]-()
+            DELETE r;
+    """)
+    session.run(delete_edge)
 
-
-def query_name_get_nodes_tx(tx, node_name):
-    target_id = tx.run(f"""
-    MATCH (node:{node_name}) 
-    RETURN node.id AS id
-    """
+    delete_node = ("""
+        MATCH (alertnodes:TestNodes)
+        DETACH DELETE alertnodes
+        """
     )
-    return list(target_id)
-
-def mining_3_hop_subgraph_tx(tx, node_id, edge_name):
-    # 获取指定节点的3跳子图节点ID
-    # MATCH path = (start)-[*1..3]-(end) 表示从start出发3跳之内与end相连
-    # MATCH path = (start)-[*1..3]->(end) 表示从start出发3跳之内到end节点（有向关系）
-    neighbor = tx.run("""
-        MERGE (alertnodes:AlertNodes {alert_id: $node_id})
-        WITH alertnodes
-        MATCH path = (start)-[*1..3]->(end)
-        WHERE start.id = $node_id AND all(r IN relationships(path) WHERE TYPE(r) = $edge_name)
-        WITH collect(end) AS neighbor_list, end, alertnodes
-        FOREACH (n IN neighbor_list | 
-                MERGE (alertnodes)-[r:alert_service_Edge]->(n))
-        RETURN collect(end.id) AS neighbor
-        """, node_id = node_id,  edge_name = edge_name
-    )
-    return list(neighbor)
-            
+    session.run(delete_node)
 
 def test_preparation(session):
     num = 10
-    node_name = "TestNodes"
-    edge_name = "before"
     # 创建10个 Test Nodes
     for i in range(num):
         node_id = i
@@ -102,11 +77,11 @@ def add_testnode_tx(tx, node_id):
 
 def add_edge_tx(tx, num):
     # Create new test edge with given id, if not exists already
-    result = tx.run("""
+    result = tx.run(f"""
         MATCH (node1:TestNodes), (node2:TestNodes)
-        WHERE  node1.id < $num AND node2.id < $num AND node1.id + 1 = node2.id
-        MERGE (node1)-[r:before]->(node2)
-        """, num=num
+        WHERE  node1.id < {num} AND node2.id < {num} AND node1.id + 1 = node2.id
+        MERGE (node1)-[r:{edge_type}]->(node2)
+        """
         )
 
 main()
