@@ -1,0 +1,8 @@
+service: "service:GraphComputation"
+labels:
+  owner: Zju302-team
+  project: complex-service-network
+include:
+- "*.py"
+python:
+  requirements_txt: "./requirements.txt"
