@@ -42,44 +42,43 @@ The server is now active at [http://localhost:3000](http://localhost:3000/). Yo
     ```
 3. 输入参数不一定需要都用到，主要为了方便大家实现自己的功能，有建议或需求随时交流。
 
-项目的service类是servie.py中的graphComputation类，:
 
-URL: 
-```bash
-'http://localhost:3000/alert_subgraph_mining'
+## Demo
+
+以alert_node_subgraph_mining这一task为例，我们建立了十个测试节点并按顺序相连（运行`subgraph_mining_api_test.py`）。
+![alt text](img/image-2.png)
+
+### 向URL发送对应格式的POST
+
+URL
+```http
+http://localhost:3000/alert_subgraph_mining
 ```
-Headers:
+Headers
 ```bash
   add
    'accept: text/plain' 
    'Content-Type: application/json' 
    ```
-Body:
-```bash
+Body
+```json
 {
     "task": "new_task",
-    "model": "subgraph_mining",
+    "model": "alert_node_subgraph_mining",
     "path": "alert_node_subgraph_mining",
-    "input_params":{  
-                "table": "neo4j",
-                "node_type": "alert_information_id",
-                "node_id": 5,
-                "edge_type": "alert_service_edge",
-                "directed": "undirected"
-                },
-    "response": "default"
+    "input_params":{
+        "table": "neo4j",
+        "node_type": "TestNodes",
+        "node_id": 5,
+        "edge_type": "service_service_Edge",
+        "directed": "undirected"
+    },
+    "return": "default"
 }
 ```
 
-Expected response
 
-```python
-import bentoml
+### Expected response
 
-with bentoml.SyncHTTPClient("http://localhost:3000") as client:
-        result = client.txt2img(
-            prompt="A cinematic shot of a baby racoon wearing an intricate italian priest robe.",
-            num_inference_steps=1,
-            guidance_scale=0.0
-        )
-```
+![alt text](img/image.png)
+![alt text](img/image-3.png)
