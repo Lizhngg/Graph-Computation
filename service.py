@@ -4,8 +4,7 @@ import importlib
 
 @bentoml.service(
     traffic={"timeout": 300},
-    workers=1,
-)
+    workers=1,)
 class graphComputation:
     def __init__(self) -> None:
         """

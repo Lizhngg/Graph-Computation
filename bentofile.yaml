@@ -1,4 +1,4 @@
-service: "service:GraphComputation"
+service: "service:graphComputation"
 labels:
   owner: Zju302-team
   project: complex-service-network
