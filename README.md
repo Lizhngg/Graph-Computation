@@ -28,7 +28,7 @@ The server is now active at [http://localhost:3000](http://localhost:3000/). Yo
     ```json
     {
         "task": "new_task",
-        "model": "subgraph_mining",
+        "model": "alert_node_subgraph_mining",
         "path": "alert_node_subgraph_mining",
         "input_params":{
             "table": "neo4j",
