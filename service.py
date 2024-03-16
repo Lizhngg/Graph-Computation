@@ -17,9 +17,8 @@ class graphComputation:
             "info": "default info"
         }
 
-    @bentoml.api(route="alert_node_subgraph_mining", 
-                 name="alert_node_subgraph_mining"
-                 )
+    @bentoml.api(
+                 name="alert_node_subgraph_mining")
     def alert_subgraph_mining(
             self,
             task: str = "alert_node_subgraph_mining",
@@ -35,7 +34,7 @@ class graphComputation:
                 "directed": "undirected"
                 },
             response = "default"
-    ) -> str:
+    ) -> dict:
         """
         在servicer被post访问时会解析请求body中的json文件,
         并将文件中的内容以参数形式输入对应被@bentoml.api修饰的方法.
@@ -47,12 +46,13 @@ class graphComputation:
         # 调用类
         mod = importlib.import_module(task_path)
         task_class = getattr(mod, model)
-        input_params.update({"task": task})
-        #实例化
-        mining_svc = task_class(**input_params)
-        # run
-        status, result = mining_svc.run()
 
-        self.response.update({"status":status, "response":result})
+        #实例化
+        mining_svc = task_class(task, **input_params)
+        # run
+        result, info = mining_svc.run()
+
+        status = "success" if result else "fail"
+        self.response.update({"status":status, "info":info})
 
         return self.response

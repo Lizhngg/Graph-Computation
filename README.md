@@ -63,22 +63,38 @@ Headers
 Body
 ```json
 {
-    "task": "new_task",
+    "task": "alert_node_subgraph_mining",
     "model": "alert_node_subgraph_mining",
     "path": "alert_node_subgraph_mining",
     "input_params":{
-        "table": "neo4j",
-        "node_type": "TestNodes",
-        "node_id": 5,
-        "edge_type": "service_service_Edge",
-        "directed": "undirected"
+        "table": "neo4j",                    
+        "mining_task": "service",            
+        "source_node_id":5,                  
+        "target_node_id":6,                  
+        "node_type": "TestNodes",            
+        "edge_type": "service_service_Edge", 
+        "directed": "undirected"             
     },
     "return": "default"
 }
 ```
+参数说明：
+"table": "neo4j",                    # 数据库表 \
+"mining_task": "service",            # "service" or "event" 对应节点和边的子图挖掘任务 \
+"source_node_id":5,                  # 起始点 \
+"target_node_id":6,                  # 目标点，边的另一个节点，在service \
+"node_type": "TestNodes",            # 节点名称，例如service_id \
+"edge_type": "service_service_Edge", # 挖掘子图的边名称，例如service的调用关系 service_service_Edge \
+"directed": "undirected"             # 是否进行有向图的挖掘，可选 "in","out","undirected" 
 
 
 ### Expected response
+期望的返回是一个json文件，其中"status"表示执行成功（"success"）或失败（"fail"），执行成功则会输出你定义的info，失败则会在info里输出error以上级别的报错信息。
+```json
+{
+    "status":"success",
+    "info":"node: 5, linked with [<Record core=5 neighbor=[2, 3, 4, 6, 7, 8]>]"
+}
+```
 
-![alt text](img/image.png)
 ![alt text](img/image-3.png)

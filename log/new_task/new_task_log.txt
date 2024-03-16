@@ -1,0 +1,23 @@
+Start:run
+[2024-03-16 22:33:06.608751][new_task]: run
+
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+End:run. Time cost:0.0004019737243652344
+Start:run
+[2024-03-16 22:34:14.909296][new_task]: run
+
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+End:run. Time cost:0.0003788471221923828
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: task.model_repo.subgraph_mining.subgraph_mining.subgraph_mining() argument after ** must be a mapping, not builtin_function_or_method
+Error occurred in run: subgraph_mining() got an unexpected keyword argument 'task'

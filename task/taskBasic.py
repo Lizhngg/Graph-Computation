@@ -15,7 +15,7 @@ PASSWORD = "Zju302Ch"
 
 
 class taskBasic(object):
-    def __init__(self, **input) -> None:
+    def __init__(self, task, **input) -> None:
         """
         维护一些基础设置,包括：数据库的连接信息,资源占用情况(CPU,GPU)
         """
@@ -23,7 +23,7 @@ class taskBasic(object):
         # 登录信息
         self.loginInfo = {"URL": URL, "USERNAME": USERNAME, "PASSWORD":PASSWORD}
 
-        self.task = input.get("task", "default_task")
+        self.task = task
         self.logger = self.logging_init(self.task)
 
         # 资源配置
@@ -34,7 +34,7 @@ class taskBasic(object):
         self.status = True
 
     def logging_init(self, task):
-        path = mkdir("log/" + task)
+        path = mkdir("log/" + task)[0]
         logging.basicConfig(
             filename='log.txt',
             level=logging.DEBUG, 
@@ -76,6 +76,6 @@ class taskBasic(object):
             else:
                 end = time.time()
                 self.logger.info(f"End:{func.__name__}. Time cost:{end-start}")
-                return True
+                return False
 
         return wrapper
