@@ -12,16 +12,25 @@ class graphComputation:
         """
         from neo4j import GraphDatabase
 
-    @bentoml.api
+        self.response = {
+            "status": "success",
+            "info": "default info"
+        }
+
+    @bentoml.api(route="alert_node_subgraph_mining", 
+                 name="alert_node_subgraph_mining"
+                 )
     def alert_subgraph_mining(
             self,
-            task: str = "new_task",
+            task: str = "alert_node_subgraph_mining",
             model: str = "alert_node_subgraph_mining",
             path: str = "alert_node_subgraph_mining",
             input_params: dict = {  
                 "table": "neo4j",
+                "mining_task":"service", 
                 "node_type": "alert_information_id",
-                "node_id": 5,
+                "source_node_id":0,
+                "target_node_id":1,
                 "edge_type": "alert_service_edge",
                 "directed": "undirected"
                 },
@@ -38,9 +47,12 @@ class graphComputation:
         # 调用类
         mod = importlib.import_module(task_path)
         task_class = getattr(mod, model)
+        input_params.update({"task": task})
         #实例化
         mining_svc = task_class(**input_params)
         # run
-        response = mining_svc.run()
+        status, result = mining_svc.run()
 
-        return response
+        self.response.update({"status":status, "response":result})
+
+        return self.response

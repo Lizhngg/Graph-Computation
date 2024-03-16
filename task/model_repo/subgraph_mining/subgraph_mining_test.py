@@ -11,7 +11,8 @@ PASSWORD = "Zju302Ch"
 TABLE = "neo4j"
 node_type = "TestNodes"
 edge_type = "service_service_Edge"
-node_id = 5
+source_node_id = 5
+target_node_id = 6
 def main():
     # 创建Neo4j数据库连接驱动程序
     with GraphDatabase.driver(URL, auth=(USERNAME, PASSWORD)) as driver:
@@ -21,8 +22,11 @@ def main():
 
             test_preparation(session)
 
-    result = subgraph_mining(table=TABLE, node_type=node_type, edge_type=edge_type, node_id=node_id, directed = "undirected", if_all=False)
-    print(f"node: {node_id}, linked with {result} \n")
+    # result = subgraph_mining(table=TABLE, node_type=node_type, edge_type=edge_type, source_node_id=source_node_id, directed = "undirected", if_all=False)
+    # print(f"node: {source_node_id}, linked with {result} \n")
+
+    result = subgraph_mining(table=TABLE, mining_task="event", node_type=node_type, edge_type=edge_type, source_node_id=source_node_id, target_node_id=target_node_id, directed = "undirected", if_all=False)
+    print(f"event: {source_node_id}-{target_node_id}, linked with {result}")
 
 
 def delete_nodes(session):

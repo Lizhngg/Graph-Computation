@@ -8,6 +8,7 @@ from task.taskBasic import taskBasic
 class alert_node_subgraph_mining(taskBasic):
     def __init__(self, **input):
         super().__init__(**input)
+        self.input = input
         self.table = input.get("table", "neo4j")
         self.node_type = input.get("node_type", "alert_info")
         self.node_id = input.get("node_id", 0)
@@ -15,7 +16,17 @@ class alert_node_subgraph_mining(taskBasic):
         self.directed = input.get("directed", "undirected")
         self.if_all = input.get("if_all", False)
 
+    @taskBasic.udf
     def run(self):
-        response = subgraph_mining(table=self.table, node_type=self.node_type, edge_type=self.edge_type, 
-                                 node_id=self.node_id, directed=self.directed, if_all=self.if_all)
-        return response
+        # run函数包含error检测
+        # @taskBasic.udf主要用于没有包含错误检测的其他方法
+        try:
+            result = subgraph_mining(**input)
+        except ValueError as e:
+            self.logger.error(f"VularError occurred in run: {e}")
+            return False, e
+        except Exception as e:
+            self.logger.error(f"Error occurred in run: {e}")
+            return False, e
+        else:
+            return True, result
