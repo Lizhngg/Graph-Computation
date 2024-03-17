@@ -11,7 +11,7 @@ class alert_node_subgraph_mining(taskBasic):
         self.input = input
         self.table = input.get("table", "neo4j")
         self.node_type = input.get("node_type", "alert_info")
-        self.node_id = input.get("node_id", 0)
+        self.node_id = input.get("node_id", 5)
         self.edge_type = input.get("edge_type", "alert_edge")
         self.directed = input.get("directed", "undirected")
         self.if_all = input.get("if_all", False)

@@ -24,13 +24,13 @@ class graphComputation:
             task: str = "alert_node_subgraph_mining",
             model: str = "alert_node_subgraph_mining",
             path: str = "alert_node_subgraph_mining",
-            input_params: dict = {  
+            subgraph_mining_task_request_param: dict = {  
                 "table": "neo4j",
                 "mining_task":"service", 
-                "node_type": "alert_information_id",
+                "node_type": "TestNodes",
                 "source_node_id":0,
                 "target_node_id":1,
-                "edge_type": "alert_service_edge",
+                "edge_type": "service_service_edge",
                 "directed": "undirected"
                 },
             response = "default"
@@ -48,7 +48,7 @@ class graphComputation:
         task_class = getattr(mod, model)
 
         #实例化
-        mining_svc = task_class(task, **input_params)
+        mining_svc = task_class(task, **subgraph_mining_task_request_param)
         # run
         result, info = mining_svc.run()
 

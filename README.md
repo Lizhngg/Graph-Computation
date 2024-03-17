@@ -78,7 +78,7 @@ Body
     "return": "default"
 }
 ```
-参数说明：
+参数说明：\
 "table": "neo4j",                    # 数据库表 \
 "mining_task": "service",            # "service" or "event" 对应节点和边的子图挖掘任务 \
 "source_node_id":5,                  # 起始点 \

@@ -10,7 +10,7 @@ PASSWORD = "Zju302Ch"
 # 创建Neo4j数据库连接驱动程序
 def subgraph_mining(table="neo4j", 
                     mining_task="service", 
-                    node_type="alert_info", 
+                    node_type="TestNodes", 
                     source_node_id=0,
                     target_node_id=1,
                     edge_type="alert_edge", 
