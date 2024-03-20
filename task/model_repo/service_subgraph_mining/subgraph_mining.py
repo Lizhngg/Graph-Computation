@@ -117,7 +117,7 @@ def query_3_hop_subgraph_service_tx(tx, node_type, node_id, edge_type, directed)
     return {
         "rootNode": root_list[0],
         "subgraphNodes": node_list,
-        "subgraphLine": [{"from": edge[0], "to": edge[1]} for edge in edges]
+        "subgraphLines": [{"from": edge[0], "to": edge[1]} for edge in edges]
     }
 
 
